@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WebApp.Data;
 using WebApp.Models;
 using WebApp.Services;
+ 
 
 namespace WebApp
 {
@@ -22,10 +23,11 @@ namespace WebApp
 
             builder.SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json")
                  .AddEnvironmentVariables();
-
+            //TODO:UserSecrets
 
 
             Configuration = builder.Build();
+             
         }
 
         public IConfiguration Configuration { get; }
