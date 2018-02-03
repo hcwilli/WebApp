@@ -16,9 +16,16 @@ namespace WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder();
+
+            builder.SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json")
+                 .AddEnvironmentVariables();
+
+
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -26,8 +33,9 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(connectionString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

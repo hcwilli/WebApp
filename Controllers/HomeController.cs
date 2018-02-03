@@ -12,6 +12,8 @@ namespace WebApp.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["ControllerNames"] = from assembly in AppDomain.CurrentDomain.GetAssemblies() from type in assembly.GetTypes() where (type.Namespace == "WebApp.Model" && type.Name != "WebAppContext" && type.Name != "<>c") select type.Name;
+
             return View();
         }
 
